@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.adventofcode.days.utils.InputReader.readInput;
+import static com.adventofcode.days.utils.InputParser.readInput;
 
 public class Day7 {
     private static List<Integer> input;
@@ -53,13 +53,12 @@ public class Day7 {
         int sum = 0;
         for (int i : input) {
             int pos = Math.abs(i - position);
-            for (int j = 1; j < (pos+1); j++) {
+            for (int j = 1; j < (pos + 1); j++) {
                 sum += j;
             }
         }
         return sum;
     }
-
 
 
     private static void parseInput() {

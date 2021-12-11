@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.adventofcode.days.utils.InputReader.readInput;
+import static com.adventofcode.days.utils.InputParser.readInput;
 
 public class Day1 {
 

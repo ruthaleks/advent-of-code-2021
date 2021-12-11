@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-import static com.adventofcode.days.utils.InputReader.readInput;
+import static com.adventofcode.days.utils.InputParser.readInput;
 
 public class Day8 {
     private static List<List<String>> input;
@@ -20,7 +20,8 @@ public class Day8 {
         getDigitMap();
 
         System.out.println("Part 1 = " + part1());
-        System.out.println("Part 2 = " + part2());;
+        System.out.println("Part 2 = " + part2());
+        ;
     }
 
     private static int part1() {
@@ -70,7 +71,7 @@ public class Day8 {
                 int sum = 0;
 
                 for (int i = 0; i < 4; i++) {
-                    sum += fourDigits.get(i) * Math.pow(10, 3-i);
+                    sum += fourDigits.get(i) * Math.pow(10, 3 - i);
                 }
                 return sum;
             }

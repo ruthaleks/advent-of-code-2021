@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.adventofcode.days.utils.InputReader.readInput;
+import static com.adventofcode.days.utils.InputParser.readInput;
 
 public class Day6 {
     private static List<Integer> input;
@@ -47,7 +47,6 @@ public class Day6 {
     private static void parseInput() {
         var in = readInput("day6.txt").collect(Collectors.toList());
         input = Arrays.stream(in.get(0).split(",")).mapToInt(Integer::parseInt).boxed().collect(Collectors.toList());
-
     }
 }
 

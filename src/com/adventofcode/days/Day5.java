@@ -7,19 +7,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.adventofcode.days.utils.InputReader.readInput;
+import static com.adventofcode.days.utils.InputParser.readInput;
 
 public class Day5 {
     private static List<Map.Entry<Map.Entry<Integer, Integer>, Map.Entry<Integer, Integer>>> input;
 
     public static void main(String[] args) {
-        var map = parseInputMap();
-        //System.out.println(input);
-        System.out.println("Part 1 = " + part1(map));
-
-        var map2 = parseInputMap();
-        System.out.println("Part 2 = " + part2(map2));
-        //System.out.println(map);
+        var initialMap = parseInputMap();
+        System.out.println("Part 1 = " + part1(new HashMap<>(initialMap)));
+        System.out.println("Part 2 = " + part2(new HashMap<>(initialMap)));
     }
 
     private static int part1(HashMap<Map.Entry<Integer, Integer>, Integer> map) {
@@ -120,7 +116,5 @@ public class Day5 {
         Integer x = Integer.parseInt(xy[0]);
         Integer y = Integer.parseInt(xy[1]);
         return Map.entry(x, y);
-
-
     }
 }

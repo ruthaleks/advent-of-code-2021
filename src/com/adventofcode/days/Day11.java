@@ -3,29 +3,33 @@ package com.adventofcode.days;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import static com.adventofcode.days.utils.InputReader.readInput;
+import static com.adventofcode.days.utils.InputParser.parseFinalGridListToMap;
+import static com.adventofcode.days.utils.InputParser.parseToList;
+import static com.adventofcode.days.utils.Utils.getAdjacentPoints;
+import static com.adventofcode.days.utils.Utils.printGrid;
 
 public class Day11 {
-    private static final int X_MAX = 9;
-    private static final int Y_MAX = 9;
+    private static int X_MAX;
+    private static int Y_MAX;
+    private static final boolean DEBUG = false;
 
     public static void main(String[] args) {
-        HashMap<Point, Integer> energyLevels = parseInput();
-        //printEnergyLevels(energyLevels);
-        System.out.println("Part 1 = " + part1(energyLevels));
-
-        energyLevels = parseInput();
-        System.out.println("Part 2 = " + part2(energyLevels));
+        var initialEnergyLevels = parseInput();
+        if (DEBUG) {
+            printGrid(initialEnergyLevels, X_MAX, Y_MAX);
+        }
+        System.out.println("Part 1 = " + part1(new HashMap<>(initialEnergyLevels)));
+        System.out.println("Part 2 = " + part2(new HashMap<>(initialEnergyLevels)));
     }
 
     private static int part1(HashMap<Point, Integer> energyLevels) {
         int numFlashed = 0;
         for (int step = 0; step < 100; step++) {
-            //System.out.println("Step " + (step+1));
+            if (DEBUG) {
+                System.out.println("Step " + (step + 1));
+            }
             numFlashed += simulateAStep(energyLevels);
         }
         return numFlashed;
@@ -38,7 +42,6 @@ public class Day11 {
             step++;
             nowFlashing = simulateAStep(energyLevels);
         }
-
         return step;
     }
 
@@ -53,18 +56,19 @@ public class Day11 {
             Set<Point> points = new HashSet<>(flashPoints);
             hasFlashed.addAll(points);
             flashPoints = new HashSet<>();
-            for(Point point: points) {
-                var adjacentPoints = new HashSet<>(getAdjacentPoints(point));
+            for (Point point : points) {
+                var adjacentPoints = new HashSet<>(getAdjacentPoints(point, X_MAX, Y_MAX, true));
                 flashPoints.addAll(increaseEnergy(adjacentPoints, currentEnergyLevels, hasFlashed));
             }
         }
 
         // reduce flashed energy to 0
-        for(Point point : hasFlashed) {
+        for (Point point : hasFlashed) {
             currentEnergyLevels.put(point, 0);
         }
-
-        //printEnergyLevels(currentEnergyLevels);
+        if (DEBUG) {
+            printGrid(currentEnergyLevels, X_MAX, Y_MAX);
+        }
         return hasFlashed.size();
     }
 
@@ -72,7 +76,7 @@ public class Day11 {
         Set<Point> flashPoints = new HashSet<>();
 
         // increase energy level by 1
-        for(Point point : points) {
+        for (Point point : points) {
             currentEnergyLevels.put(point, currentEnergyLevels.get(point) + 1);
             if (currentEnergyLevels.get(point) > 9 && !hasFlashed.contains(point)) {
                 flashPoints.add(point);
@@ -81,51 +85,11 @@ public class Day11 {
         return flashPoints;
     }
 
-    private static List<Point> getAdjacentPoints(Point point) {
-        if (point.x == 0 && point.y == 0) {
-            return List.of(new Point(0, 1), new Point(1, 0), new Point(1, 1));
-        } else if (point.x == 0 && point.y == Y_MAX) {
-            return List.of(new Point(0, Y_MAX - 1), new Point(1, Y_MAX), new Point(1, Y_MAX - 1));
-        } else if (point.x == X_MAX && point.y == 0) {
-            return List.of(new Point(X_MAX, 1), new Point(X_MAX - 1, 0), new Point(X_MAX - 1, 1));
-        } else if (point.x == X_MAX && point.y == Y_MAX) {
-            return List.of(new Point(X_MAX, Y_MAX - 1), new Point(X_MAX - 1, Y_MAX), new Point(X_MAX - 1, Y_MAX - 1));
-        } else if (point.x == 0) {
-            return List.of(new Point(0, point.y + 1), new Point(1, point.y), new Point(0, point.y - 1), new Point(1, point.y + 1), new Point(1,point.y - 1));
-        } else if (point.x == X_MAX) {
-            return List.of(new Point(X_MAX, point.y + 1), new Point(X_MAX - 1, point.y), new Point(X_MAX, point.y - 1), new Point(X_MAX -1 , point.y + 1), new Point(X_MAX - 1, point.y - 1));
-        } else if (point.y == 0) {
-            return List.of(new Point(point.x + 1, 0), new Point(point.x, 1), new Point(point.x - 1, 0), new Point(point.x + 1, 1), new Point(point.x - 1, 1));
-        } else if (point.y == Y_MAX) {
-            return List.of(new Point(point.x + 1, Y_MAX), new Point(point.x, Y_MAX - 1), new Point(point.x - 1, Y_MAX), new Point(point.x  + 1, Y_MAX-1), new Point(point.x - 1, Y_MAX-1));
-        } else {
-            return List.of(new Point(point.x, point.y - 1), new Point(point.x, point.y + 1), new Point(point.x - 1, point.y), new Point(point.x + 1, point.y), new Point(point.x + 1, point.y - 1),
-                           new Point(point.x + 1, point.y + 1), new Point(point.x - 1, point.y + 1), new Point(point.x - 1, point.y - 1));
-        }
-    }
-
-    private static void printEnergyLevels(HashMap<Point, Integer> energyLevels) {
-        System.out.println("-------------------------");
-        for (int y = 0; y <= Y_MAX; y++) {
-            for (int x = 0; x <= X_MAX; x++) {
-                System.out.print(energyLevels.get(new Point(x, y)));
-                System.out.print(", ");
-            }
-            System.out.print("\n");
-        }
-        System.out.println("-------------------------");
-    }
-
     private static HashMap<Point, Integer> parseInput() {
-        HashMap<Point, Integer> energyLevels = new HashMap<>();
-        var in = readInput("day11.txt").collect(Collectors.toList());
+        var input = parseToList("day11.txt");
+        X_MAX = input.get(0).length() - 1;
+        Y_MAX = input.size() - 1;
 
-        for (int y = 0; y <= Y_MAX; y++) {
-            var row = in.get(y).split("");
-            for (int x = 0; x <= X_MAX; x++) {
-                energyLevels.put(new Point(x, y), Integer.parseInt(row[x]));
-            }
-        }
-        return energyLevels;
+        return parseFinalGridListToMap(input, "");
     }
 }
