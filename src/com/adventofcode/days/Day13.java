@@ -25,19 +25,19 @@ public class Day13 {
 
     private static void part2(HashSet<Point> grid) {
         var foldedGrid = grid;
-        for(Map.Entry<String, Integer> instruction : foldingInstructions) {
+        for (Map.Entry<String, Integer> instruction : foldingInstructions) {
             foldedGrid = fold(instruction, foldedGrid);
         }
         printMessage(foldedGrid);
     }
 
-    private static void printMessage(HashSet<Point> grid){
+    private static void printMessage(HashSet<Point> grid) {
         Point maxCoordinates = findMax(grid);
         final int X_MAX = maxCoordinates.x;
         final int Y_MAX = maxCoordinates.y;
         for (int y = 0; y <= Y_MAX; y++) {
             for (int x = 0; x <= X_MAX; x++) {
-                if(grid.contains(new Point(x,y))) {
+                if (grid.contains(new Point(x, y))) {
                     System.out.print("#");
                 } else {
                     System.out.print(" ");
@@ -49,22 +49,22 @@ public class Day13 {
 
     private static Point findMax(HashSet<Point> grid) {
         Point maxPoint = new Point(0, 0);
-        for(Point point : grid) {
+        for (Point point : grid) {
             maxPoint.x = Math.max(maxPoint.x, point.x);
             maxPoint.y = Math.max(maxPoint.y, point.y);
         }
         return maxPoint;
     }
 
-    private static HashSet<Point> fold(Map.Entry<String, Integer> instruction, HashSet<Point> grid){
+    private static HashSet<Point> fold(Map.Entry<String, Integer> instruction, HashSet<Point> grid) {
 
         return Objects.equals(instruction.getKey(), "y") ? foldUp(instruction.getValue(), grid) : foldLeft(instruction.getValue(), grid);
     }
 
-    private static HashSet<Point> foldUp(final int POS, HashSet<Point> grid){
+    private static HashSet<Point> foldUp(final int POS, HashSet<Point> grid) {
         HashSet<Point> reducedGrid = new HashSet<>();
-        for(Point point : grid) {
-            if(point.y < POS) {
+        for (Point point : grid) {
+            if (point.y < POS) {
                 reducedGrid.add(point);
             } else if (point.y > POS) {
                 reducedGrid.add(new Point(point.x, POS * 2 - point.y));
@@ -73,10 +73,10 @@ public class Day13 {
         return reducedGrid;
     }
 
-    private static HashSet<Point> foldLeft(final int POS, HashSet<Point> grid){
+    private static HashSet<Point> foldLeft(final int POS, HashSet<Point> grid) {
         HashSet<Point> reducedGrid = new HashSet<>();
-        for(Point point : grid) {
-            if(point.x < POS) {
+        for (Point point : grid) {
+            if (point.x < POS) {
                 reducedGrid.add(point);
             } else if (point.x > POS) {
                 reducedGrid.add(new Point(POS * 2 - point.x, point.y));
@@ -84,7 +84,6 @@ public class Day13 {
         }
         return reducedGrid;
     }
-
 
 
     private static HashSet<Point> parseInput() {
@@ -103,7 +102,7 @@ public class Day13 {
             grid.add(new Point(x, y));
         }
 
-        for(int i = input.indexOf("")+1 ; i < input.size() ; i++) {
+        for (int i = input.indexOf("") + 1; i < input.size(); i++) {
             var tmp = input.get(i).split(" ")[2].split("=");
             var key = tmp[0];
             var value = Integer.parseInt(tmp[1]);
