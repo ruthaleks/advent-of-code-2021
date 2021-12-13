@@ -18,7 +18,6 @@ public class Day12 {
         parseInput();
         System.out.println("Part 1 = " + part1());
         System.out.println("Part 2 = " + part2());
-
     }
 
     private static int part1() {
@@ -28,7 +27,7 @@ public class Day12 {
 
         int count = 0;
         for (Link path : paths) {
-            if (path.value.equals("end")){
+            if (path.value.equals("end")) {
                 count++;
             }
         }
@@ -42,7 +41,7 @@ public class Day12 {
 
         int count = 0;
         for (Link path : paths) {
-            if (path.value.equals("end")){
+            if (path.value.equals("end")) {
                 count++;
             }
         }
@@ -75,7 +74,7 @@ public class Day12 {
         for (String value : map.get(parent.value)) {
             Link link = new Link(value, parent, parent.visitedOneSmallCanTwice);
             if (part2) {
-                if(tree.smallCaveVisited(link, parent) && !parent.visitedOneSmallCanTwice) {
+                if (tree.smallCaveVisited(link, parent) && !parent.visitedOneSmallCanTwice) {
                     link.visitedOneSmallCanTwice = true;
                     out.add(link);
                 }
