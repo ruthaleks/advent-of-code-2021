@@ -12,7 +12,7 @@ public class Utils {
         for (int y = 0; y <= Y_MAX; y++) {
             for (int x = 0; x <= X_MAX; x++) {
                 System.out.print(gridMap.get(new Point(x, y)));
-                System.out.print(", ");
+                System.out.print(",");
             }
             System.out.print("\n");
         }
@@ -25,23 +25,23 @@ public class Utils {
 
         if (point.x == 0 && point.y == 0) {
             adjacentPoints = List.of(new Point(0, 1),
-                                     new Point(1, 0),
-                                     new Point(1, 1));
+                                     new Point(1, 0));
+                                     //new Point(1, 1));
 
         } else if (point.x == 0 && point.y == Y_MAX) {
             adjacentPoints = List.of(new Point(0, Y_MAX - 1),
-                                     new Point(1, Y_MAX),
-                                     new Point(1, Y_MAX - 1));
+                                     new Point(1, Y_MAX));
+                                     //new Point(1, Y_MAX - 1));
 
         } else if (point.x == X_MAX && point.y == 0) {
             adjacentPoints = List.of(new Point(X_MAX, 1),
-                                     new Point(X_MAX - 1, 0),
-                                     new Point(X_MAX - 1, 1));
+                                     new Point(X_MAX - 1, 0));
+                                     //new Point(X_MAX - 1, 1));
 
         } else if (point.x == X_MAX && point.y == Y_MAX) {
             adjacentPoints = List.of(new Point(X_MAX, Y_MAX - 1),
-                                     new Point(X_MAX - 1, Y_MAX),
-                                     new Point(X_MAX - 1, Y_MAX - 1));
+                                     new Point(X_MAX - 1, Y_MAX));
+                                     //new Point(X_MAX - 1, Y_MAX - 1));
 
         } else if (point.x == 0) {
             diagonalPoints = List.of(new Point(1, point.y + 1),
